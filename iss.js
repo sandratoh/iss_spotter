@@ -10,7 +10,7 @@ const request = require('request');
  *   - The IP address as a string (null if error). Example: "162.245.144.188"
  */
 
-const fetchMyIP = function(callback) {
+const fetchMyIP = callback => {
   // use request to fetch IP address from JSON API
   request('https://api.ipify.org/?format=json', (error, response, body) => {
     if (error) {
@@ -29,4 +29,14 @@ const fetchMyIP = function(callback) {
   });
 };
 
-module.exports = { fetchMyIP };
+// Retrive latitude and longitude with Geo IP
+const fetchCoordsByIP = (ip, callback) => {
+  request('https://freegeoip.app/json/', (error, response, body) => {
+    let coords = {};
+    coords.latitude = JSON.parse(body).latitude;
+    coords.longitude = JSON.parse(body).longitude;
+    console.log(coords);
+  });
+};
+
+module.exports = { fetchMyIP, fetchCoordsByIP };
