@@ -27,10 +27,10 @@ const { fetchISSFlyOverTimes } = require('./iss');
 
 // Temporary test codes to check fetchISSFlyOverTimes
 
-// fetchISSFlyOverTimes({ latitude: 49.1297, longitude: -123.1658 }, (error, data) => {
+// fetchISSFlyOverTimes({ latitude: 49.1297, longitude: -123.1658 }, (error, passTimes) => {
 //   if (error) {
 //     console.log("It didn't work!", error);
 //     return;
 //   }
-//   console.log('It worked! Returned fly over times:', data);
+//   console.log('It worked! Returned flyover times:', passTimes);
 // });

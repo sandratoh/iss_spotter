@@ -70,12 +70,12 @@ const fetchISSFlyOverTimes = function(coords, callback) {
     }
 
     if (response.statusCode !== 200) {
-      const msg = `Status Code ${response.statusCode} when fetching fly over times for IP and coordinates. Response: ${body}`;
+      const msg = `Status Code ${response.statusCode} when fetching ISS pass times. Response: ${body}`;
       return callback(Error(msg), null);
     
     } else {
-      const flyOverTimes = JSON.parse(body).response;
-      return callback(null, flyOverTimes);
+      const passes = JSON.parse(body).response;
+      return callback(null, passes);
     }
   });
 };
