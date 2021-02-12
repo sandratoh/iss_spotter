@@ -60,7 +60,7 @@ const fetchCoordsByIP = (ip, callback) => {
  *   - The fly over times as an array of objects (null if error). Example:
  *     [ { risetime: 134564234, duration: 600 }, ... ]
  */
-const fetchISSFlyOverTimes = function(coords, callback) {
+const fetchISSFlyOverTimes = (coords, callback) => {
   const lat = coords.latitude;
   const lon = coords.longitude;
   request(`http://api.open-notify.org/iss-pass.json?lat=${lat}&lon=${lon}`, (error, response, body) => {
@@ -80,5 +80,36 @@ const fetchISSFlyOverTimes = function(coords, callback) {
   });
 };
 
+/**
+ * Orchestrates multiple API requests in order to determine the next 5 upcoming ISS fly overs for the user's current location.
+ * Input:
+ *   - A callback with an error or results.
+ * Returns (via Callback):
+ *   - An error, if any (nullable)
+ *   - The fly-over times as an array (null if error):
+ *     [ { risetime: <number>, duration: <number> }, ... ]
+ */
+const nextISSTimesForMyLocation = function(callback) {
 
-module.exports = { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes };
+  fetchMyIP((error, ip) => {
+    if (error) {
+      return callback(error, null);
+    }
+
+    fetchCoordsByIP(ip, (error, coords) => {
+      if (error) {
+        return callback(error, null);
+      }
+
+      fetchISSFlyOverTimes(coords, (error, passTimes) => {
+        if (error) {
+          return callback(error, null);
+        }
+        
+        return callback(null, passTimes);
+      });
+    });
+  });
+};
+
+module.exports = { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes, nextISSTimesForMyLocation };
