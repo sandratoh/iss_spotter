@@ -14,7 +14,7 @@ const fetchMyIP = callback => {
   // use request to fetch IP address from JSON API
   request('https://api.ipify.org/?format=json', (error, response, body) => {
     if (error) {
-      const error = 'An error occurred!. You might want to check the URL or web server.';
+      const error = 'An error occurred when checking your IP Address. You might want to check the web server or try again later.';
       return callback(error, null);
     }
     // if non-200 status, assume server error
@@ -31,11 +31,22 @@ const fetchMyIP = callback => {
 
 // Retrive latitude and longitude with Geo IP
 const fetchCoordsByIP = (ip, callback) => {
-  request('https://freegeoip.app/json/', (error, response, body) => {
-    let coords = {};
-    coords.latitude = JSON.parse(body).latitude;
-    coords.longitude = JSON.parse(body).longitude;
-    console.log(coords);
+  request(`https://freegeoip.app/json/${ip}`, (error, response, body) => {
+    if (error) {
+      const error = 'An error occured when checking your coordinates. You might want to check the web server or try again later.';
+      return callback(error, null);
+    }
+    
+    if (response.statusCode !== 200) {
+      const msg = `Status Code ${response.statusCode} when fetching coordinates for IP. Response: ${body}`;
+      return callback(Error(msg), null);
+
+    } else {
+      let coords = {};
+      coords.latitude = JSON.parse(body).latitude;
+      coords.longitude = JSON.parse(body).longitude;
+      return callback(null, coords);
+    }
   });
 };
 
