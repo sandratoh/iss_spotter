@@ -1,0 +1,1 @@
+// require and run main fetch function
