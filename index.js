@@ -1,6 +1,6 @@
 // require and run main fetch function
 
-// Test codes to check fetMyIP function
+// Temporary test codes to check fetMyIP function
 // const { fetchMyIP } = require('./iss');
 
 // fetchMyIP((error, ip) => {
